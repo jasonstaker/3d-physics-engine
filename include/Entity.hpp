@@ -13,6 +13,10 @@ public:
     virtual ~Entity() {};
 
     // functions
+    Vec& getPosition();
+    Vec& getVelocity();
+    Vec& getAcceleration();
+    float getMass();
 
 private:
 

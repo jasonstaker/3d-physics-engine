@@ -2,6 +2,7 @@
 #define WORLD_HPP
 
 #include "Entity.hpp"
+#include "Physics.hpp"
 #include <vector>
 #include <memory>
 #include <utility>
@@ -25,6 +26,7 @@ private:
     // fields
     int width, height;
     vector<shared_ptr<Entity>> entities;
+    Physics physics;
     
 };
 
