@@ -1,5 +1,14 @@
 /build/
-/.vscode/
-CMakeCache.txt
+*.o
+*.exe
+*.out
+
 CMakeFiles/
-/compile_commands.json
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+.vscode/
+
+.DS_Store
+Thumbs.db
