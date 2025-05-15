@@ -13,9 +13,7 @@ void World::addEntity(shared_ptr<Entity> entity) {
 
 void World::update(float dt) {
     physics.update(entities, dt);
-    cout << "Frame " << counter << ": ";
-    cout << entities[0]->getPosition().x << " " << entities[0]->getPosition().y << "\n";
-    counter++;
+    // eventually collision
 }
 
 int World::getWidth() {
@@ -24,4 +22,8 @@ int World::getWidth() {
 
 int World::getHeight() {
     return height;
+}
+
+const vector<shared_ptr<Entity>>& World::getEntities() const {
+    return entities;
 }

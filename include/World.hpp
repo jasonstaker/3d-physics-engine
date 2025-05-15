@@ -20,6 +20,8 @@ public:
     void update(float dt);
     int getWidth();
     int getHeight();
+    const vector<shared_ptr<Entity>>& getEntities() const;
+
     
 private:
 
