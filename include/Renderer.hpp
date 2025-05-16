@@ -1,5 +1,4 @@
-#ifndef RENDERER_HPP
-#define RENDERER_HPP
+#pragma once
 
 #include "SFML/Graphics.hpp"
 #include "Entity.hpp"
@@ -21,10 +20,10 @@ public:
     void renderEntity(const shared_ptr<Entity>& entity);
 
 private:
+
+    // fields
     unsigned int width; 
     unsigned int height;
     sf::RenderWindow* window;
     ShapeFactory shapeFactory;
 };
-
-#endif

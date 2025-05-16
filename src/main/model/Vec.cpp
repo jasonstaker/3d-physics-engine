@@ -1,3 +1,4 @@
+// Vec.cpp
 #include "Vec.hpp"
 
 Vec::Vec() : x(0.0f), y(0.0f) {}

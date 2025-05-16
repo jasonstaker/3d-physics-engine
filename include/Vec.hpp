@@ -1,5 +1,4 @@
-#ifndef VEC_HPP
-#define VEC_HPP
+#pragma once
 
 #include <cmath>
 
@@ -24,5 +23,3 @@ public:
     Vec proj(const Vec& vec) const;
 
 };
-
-#endif

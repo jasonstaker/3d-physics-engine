@@ -1,5 +1,4 @@
-#ifndef PHYSICS_HPP
-#define PHYSICS_HPP
+#pragma once
 
 #include "Vec.hpp"
 #include <vector>
@@ -25,5 +24,3 @@ public:
     Vec getLinearDragVec(const shared_ptr<Entity>& entity);
 
 };
-
-#endif

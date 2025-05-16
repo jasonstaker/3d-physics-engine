@@ -1,5 +1,4 @@
-#ifndef ENTITY_HPP
-#define ENTITY_HPP
+#pragma once
 
 #include <Vec.hpp>
 
@@ -25,5 +24,3 @@ private:
     float mass;
 
 };
-
-#endif

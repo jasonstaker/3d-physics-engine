@@ -1,11 +1,10 @@
 // World.cpp
 #include "World.hpp"
-#include <iostream>
 
 static int counter = 1;
 
 World::World(int width, int height, vector<shared_ptr<Entity>> entities)
-    : width(width), height(height), entities(move(entities)) {}
+    : width(width), height(height), entities(move(entities)) { make_unique<Collision>(); }
 
 void World::addEntity(shared_ptr<Entity> entity) {
     entities.push_back(move(entity));
@@ -13,7 +12,7 @@ void World::addEntity(shared_ptr<Entity> entity) {
 
 void World::update(float dt) {
     physics.update(entities, dt);
-    collision.update(entities);
+    collision->update(entities);
 }
 
 int World::getWidth() {

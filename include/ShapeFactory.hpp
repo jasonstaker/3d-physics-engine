@@ -1,5 +1,4 @@
-#ifndef SHAPEFACTORY_HPP
-#define SHAPEFACTORY_HPP
+#pragma once
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include "Entity.hpp"
@@ -18,5 +17,3 @@ public:
     unique_ptr<sf::Shape> createShape(const shared_ptr<Entity>& entity) const;
 
 };
-
-#endif

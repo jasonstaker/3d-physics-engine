@@ -1,5 +1,4 @@
-#ifndef WORLD_HPP
-#define WORLD_HPP
+#pragma once
 
 #include "Entity.hpp"
 #include "Physics.hpp"
@@ -30,8 +29,6 @@ private:
     int width, height;
     vector<shared_ptr<Entity>> entities;
     Physics physics;
-    Collision collision;
+    unique_ptr<Collision> collision;
     
 };
-
-#endif
