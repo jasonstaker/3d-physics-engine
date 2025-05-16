@@ -28,3 +28,12 @@ Vec Vec::getUnit() const {
     float norm = this->norm();
     return Vec(x/norm, y/norm);
 }
+
+float Vec::dot(const Vec& vec) const {
+    return (x*vec.x) + (y*vec.y);
+}
+
+Vec Vec::proj(const Vec& vec) const {
+    float coefficient = dot(vec)/dot(*this);
+    return (*this)*coefficient;
+}

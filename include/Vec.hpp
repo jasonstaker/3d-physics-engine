@@ -20,6 +20,8 @@ public:
     Vec operator/(float scalar) const;
     float norm() const;
     Vec getUnit() const;
+    float dot(const Vec& vec) const;
+    Vec proj(const Vec& vec) const;
 
 };
 
