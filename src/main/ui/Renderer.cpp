@@ -24,14 +24,15 @@ void Renderer::render(const vector<shared_ptr<Entity>>& entities) {
             }
         }
 
-
+        window->clear();
         for (shared_ptr<Entity> entity : entities) {
             renderEntity(entity);
         }
+        window->display();
     }
 }
 
 void Renderer::renderEntity(const shared_ptr<Entity>& entity) {
-    auto drawnEntity = shapeFactory.
-    window->draw(drawnEntity);
+    auto drawnEntity = shapeFactory.createShape(entity);
+    window->draw(*drawnEntity);
 }
