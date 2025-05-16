@@ -13,6 +13,7 @@ class Physics {
 public:
 
     // fields
+    const float TIME_SCALE = 4.0f;
     Vec gravity = Vec(0, 9.81f);
     float dragCoefficient = 0.01f;
     float restitution = 0.8f;
