@@ -18,6 +18,10 @@ public:
     // functions
     void run();
 
+    // fields
+    const static unsigned int WINDOW_WIDTH = 1920/2;
+    const static unsigned int WINDOW_HEIGHT = 1080/2;
+
 private:
 
     // fields

@@ -13,7 +13,7 @@ void World::addEntity(shared_ptr<Entity> entity) {
 
 void World::update(float dt) {
     physics.update(entities, dt);
-    // eventually collision
+    collision.update(entities);
 }
 
 int World::getWidth() {

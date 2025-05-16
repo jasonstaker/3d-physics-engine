@@ -1,10 +1,6 @@
 #include "Simulation.hpp"
 #include "World.hpp"
 
-const unsigned int WINDOW_WIDTH = 1920/2;
-const unsigned int WINDOW_HEIGHT = 1080/2;
-
-
 Simulation::Simulation() : world(WINDOW_WIDTH, WINDOW_HEIGHT, {}) {
     // temporary
     world.addEntity(make_shared<Ball>(Vec(WINDOW_WIDTH/2, WINDOW_HEIGHT/2), Vec(0.0f, -39.6f)));
@@ -16,6 +12,7 @@ void Simulation::run() {
     // temporary
     float cap = 8.0f;
     float total = 0.0f;
+    int c = 0;
     //
 
     const int targetFPS = 60;
@@ -38,7 +35,8 @@ void Simulation::run() {
 
         world.update(elapsed/1000);
         total += elapsed/1000;
-        cout << total << endl;
+        c += 1;
+        cout << c << endl;
 
         if (duration<double, std::milli>(currentTime - lastRenderTime).count() >= frameDuration) {
             lastRenderTime = currentTime;
