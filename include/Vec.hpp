@@ -1,6 +1,8 @@
 #ifndef VEC_HPP
 #define VEC_HPP
 
+#include <cmath>
+
 class Vec {
 public:
 
@@ -16,6 +18,8 @@ public:
     Vec operator-(const Vec& other) const;
     Vec operator*(float scalar) const;
     Vec operator/(float scalar) const;
+    float norm() const;
+    Vec getUnit() const;
 
 };
 

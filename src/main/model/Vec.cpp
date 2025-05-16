@@ -19,3 +19,12 @@ Vec Vec::operator*(float scalar) const {
 Vec Vec::operator/(float scalar) const {
     return Vec(x/scalar, y/scalar);
 }
+
+float Vec::norm() const {
+    return sqrt(pow(x,2) + pow(y,2));
+}
+
+Vec Vec::getUnit() const {
+    float norm = this->norm();
+    return Vec(x/norm, y/norm);
+}
