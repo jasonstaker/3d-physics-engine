@@ -1,15 +1,20 @@
 #include "Simulation.hpp"
 #include "World.hpp"
 
-Simulation::Simulation() : world(1920/2, 1080/2, {}) {
+const unsigned int WINDOW_WIDTH = 1920/2;
+const unsigned int WINDOW_HEIGHT = 1080/2;
+
+
+Simulation::Simulation() : world(WINDOW_WIDTH, WINDOW_HEIGHT, {}) {
     // temporary
-    world.addEntity(make_shared<Ball>(Vec(1920/4, 1080/4)));
+    world.addEntity(make_shared<Ball>(Vec(WINDOW_WIDTH/2, WINDOW_HEIGHT/2), Vec(0.0f, -39.6f)));
+    renderer = Renderer(WINDOW_WIDTH, WINDOW_HEIGHT);
     //
 }
 
 void Simulation::run() {
     // temporary
-    float cap = 5.0f;
+    float cap = 8.0f;
     float total = 0.0f;
     //
 

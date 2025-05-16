@@ -3,7 +3,6 @@
 
 #include "World.hpp"
 #include "Renderer.hpp"
-#include "InputHandler.hpp"
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -23,7 +22,7 @@ private:
 
     // fields
     World world;
-    Renderer renderer = Renderer(1920/2, 1080/2);
+    Renderer renderer;
     //InputHandler input;
 
 };

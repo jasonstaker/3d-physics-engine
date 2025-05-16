@@ -13,6 +13,7 @@ class Renderer {
 public:
 
     // constructors
+    Renderer();
     Renderer(unsigned int width, unsigned int height);
     
     // functions
