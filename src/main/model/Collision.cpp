@@ -1,35 +1,47 @@
 // Collision.cpp
 #include "Collision.hpp"
-#include <Ball.hpp>
-#include <iostream>
-#include <Simulation.hpp>
 
 Collision::Collision() {}
 
 void Collision::update(vector<shared_ptr<Entity>>& entities) {
+    Quadtree qt(AABB(Vec(0, 0), Vec(Simulation::WINDOW_WIDTH, Simulation::WINDOW_HEIGHT)), 4);
+    for (auto& e : entities) {
+        qt.insert(e);
+    }
 
-    for (size_t i = 0; i < entities.size() - 1; ++i) {
-        for (size_t j = i + 1; j < entities.size(); ++j) {
-            auto& a = entities[i];
-            auto& b = entities[j];
+    for (auto& ent : entities) {
+        if (!ent) continue;
+        auto a = dynamic_pointer_cast<Ball>(ent);
+        float rA = a->getRadius();
+        Vec pos = a->getPosition();
 
-            if (!a || !b) continue;
+        // Use reach = rA + rA (or rA + maxOtherRadius if they differ)
+        float reach = rA * 2.0f;
+        AABB range(
+            Vec(pos.x - reach, pos.y - reach),
+            Vec(pos.x + reach, pos.y + reach)
+        );
 
-            if (checkCollisionBetween(a, b)) {
-                resolveCollisionBetween(a, b);
+        auto nearby = qt.query(range);
+        for (auto& other : nearby) {
+            if (!other || other == ent) continue;
+
+            // ensure each pair only resolved once
+            if (ent.get() >= other.get()) continue;
+
+            if (checkCollisionBetween(ent, other)) {
+                resolveCollisionBetween(ent, other);
             }
         }
     }
 
     for (auto& entity : entities) {
-        if (!entity) continue;
-
-        if (checkCollisionBorder(entity)) {
+        if (entity && checkCollisionBorder(entity)) {
             resolveCollisionBorder(entity);
         }
     }
-    
 }
+
 
 // for circles only currently
 bool Collision::checkCollisionBetween(const shared_ptr<Entity>& entityOne, const shared_ptr<Entity>& entityTwo) {
