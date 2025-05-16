@@ -15,10 +15,12 @@ public:
     Collision();
 
     // functions
-    void update(const vector<shared_ptr<Entity>>& entities);
+    void update(vector<shared_ptr<Entity>>& entities);
     bool checkCollisionBetween(const shared_ptr<Entity>& entityOne, const shared_ptr<Entity>& entityTwo);
     bool checkCollisionBorder(const shared_ptr<Entity>& entity);
-    float distance(const shared_ptr<Entity>& entityOne, const shared_ptr<Entity>& entityTwo);
+    float distance(const shared_ptr<Entity>& entityOne, const shared_ptr<Entity>& entityTwo) const;
+    void resolveCollisionBetween(shared_ptr<Entity>& entityOne, shared_ptr<Entity>& entityTwo);
+    void resolveCollisionBorder(shared_ptr<Entity>& entity);
 };
 
 #endif

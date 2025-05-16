@@ -16,7 +16,7 @@ Renderer::Renderer(unsigned int width, unsigned int height) : width(width), heig
 void Renderer::render(const vector<shared_ptr<Entity>>& entities) {
     
     if (window->isOpen()) {
-        while (const std::optional event = window->pollEvent()) {
+        if (const std::optional event = window->pollEvent()) {
             if (event->is<sf::Event::Closed>()) {
                 window->close();
             } else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {

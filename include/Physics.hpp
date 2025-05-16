@@ -13,11 +13,11 @@ class Physics {
 public:
 
     // fields
-    const float TIME_SCALE = 4.0f;
+    const float TIME_SCALE = 6.0f;
     Vec gravity = Vec(0, 9.81f);
-    float dragCoefficient = 0.01f;
-    float restitution = 0.8f;
-    float groundFriction = 0.05f;
+    constexpr static float dragCoefficient = 0.01f;
+    constexpr static float restitution = 0.8f;
+    constexpr static float groundFriction = 0.05f;
 
     // functions
     void update(const vector<shared_ptr<Entity>>& entities, float dt);

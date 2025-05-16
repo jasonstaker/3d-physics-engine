@@ -7,7 +7,7 @@ class Ball : public Entity {
 public:
 
     // constructors
-    Ball(Vec position = Vec(), Vec velocity = Vec(), Vec acceleration = Vec(), float mass = 1.0f, float radius = 10.0f);
+    Ball(Vec position = Vec(), Vec velocity = Vec(), Vec acceleration = Vec(), float mass = 1.0f, float radius = 50.0f);
 
     // destructor
     ~Ball() override {}
