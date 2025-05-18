@@ -57,45 +57,37 @@ void Quadtree::subdivide() {
     divided = true;
 }
 
-vector<shared_ptr<Entity>> Quadtree::query(const AABB& range) {
-    vector<shared_ptr<Entity>> found;
-
-    if (!boundary.intersects(range)) {
-        return found;
-    }
+void Quadtree::query(const AABB& range, vector<shared_ptr<Entity>>& out) {
+    if (!boundary.intersects(range)) return;
 
     for (const auto& obj : objects) {
         if (range.contains(obj->getPosition())) {
-            found.push_back(obj);
+            out.push_back(obj);
         }
     }
 
     if (divided) {
-        auto ne = northeast->query(range);
-        auto nw = northwest->query(range);
-        auto se = southeast->query(range);
-        auto sw = southwest->query(range);
-
-        found.insert(found.end(), ne.begin(), ne.end());
-        found.insert(found.end(), nw.begin(), nw.end());
-        found.insert(found.end(), se.begin(), se.end());
-        found.insert(found.end(), sw.begin(), sw.end());
+        northeast->query(range, out);
+        northwest->query(range, out);
+        southeast->query(range, out);
+        southwest->query(range, out);
     }
-
-    return found;
 }
 
 void Quadtree::clear() {
     objects.clear();
+
     if (divided) {
         northeast->clear();
         northwest->clear();
         southeast->clear();
         southwest->clear();
+
         northeast.reset();
         northwest.reset();
         southeast.reset();
         southwest.reset();
+
         divided = false;
     }
 }
