@@ -13,14 +13,16 @@ namespace Config {
     static Vec gravity = Vec(0, 9.81f);
     constexpr static float dragCoefficient = 0.01f;
     constexpr static float restitution = .8f;
-    constexpr static float groundFriction = .05f;
+    constexpr static float frictionCoefficient = 1.0f;
 
     // Simulation variables
     static constexpr float simulationRunTime = 6.0f;
-    static constexpr float renderFrequencyMultiplier = 2.0f;
+    static constexpr float renderFrequencyMultiplier = 6.0f;
     static constexpr float targetFPS = 60.0f;
-    static const int numBalls = 500;
-    static const float radius = 5.0f;
+    const double frameDuration = 1000.0 / targetFPS;
+    const float fixedTimeStep = 1.0f / (targetFPS*renderFrequencyMultiplier);
+    static const int numBalls = 1000;
+    static const float radius = 6.0f;
     static const float spawnMargin = radius;
     static const int maxAttempts = 5000;
 }
