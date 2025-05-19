@@ -33,5 +33,6 @@ public:
     static void resolveCollisionBetween(shared_ptr<Entity>& entityOne, shared_ptr<Entity>& entityTwo);
     static void resolveCollisionBorder(shared_ptr<Entity>& entity);
     static void checkAndResolveBetween(shared_ptr<Entity> entityOne, shared_ptr<Entity> entityTwo);
+    void applyContinuousFrictionIfOnBottom(std::shared_ptr<Entity>& entity);
     
 };

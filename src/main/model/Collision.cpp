@@ -1,5 +1,6 @@
 // Collision.cpp
 #include "Collision.hpp"
+#include <iostream>
 
 Collision::Collision() {}
 
@@ -46,6 +47,8 @@ void Collision::update(std::vector<std::shared_ptr<Entity>>& entities) {
         if (entityPtr && checkCollisionBorder(entityPtr)) {
             resolveCollisionBorder(entityPtr);
         }
+
+        applyContinuousFrictionIfOnBottom(entityPtr);
     }
 }
 
@@ -146,14 +149,8 @@ void Collision::resolveCollisionBorder(std::shared_ptr<Entity>& entity) {
 
     // Bottom border
     if ((ballPtr->getPosition().y + ballPtr->getRadius()) >= Config::windowHeight) {
-        ballPtr->getVelocity() = Vec(
-            ballPtr->getVelocity().x,
-            ballPtr->getVelocity().y * -1 * Config::restitution
-        );
-        ballPtr->getPosition() = Vec(
-            ballPtr->getPosition().x,
-            Config::windowHeight - ballPtr->getRadius()
-        );
+        ballPtr->getPosition().y = Config::windowHeight - ballPtr->getRadius();
+        ballPtr->getVelocity().y *= -Config::restitution;
     }
 
     // Left border
@@ -178,5 +175,23 @@ void Collision::resolveCollisionBorder(std::shared_ptr<Entity>& entity) {
             ballPtr->getPosition().x,
             ballPtr->getRadius()
         );
+    }
+}
+
+void Collision::applyContinuousFrictionIfOnBottom(shared_ptr<Entity>& entity) {
+    auto ballPtr = static_pointer_cast<Ball>(entity);
+
+    float bottomY = ballPtr->getPosition().y + ballPtr->getRadius();
+    if (abs(bottomY - Config::windowHeight) < 0.5f) {
+        if (abs(ballPtr->getVelocity().x) > 0.0f) {
+            float frictionImpulse = Config::gravity.y * Config::frictionCoefficient * Config::fixedTimeStep * Config::timeScale;
+            float direction = (ballPtr->getVelocity().x > 0) ? -1.0f : 1.0f;
+
+            ballPtr->getVelocity().x += direction * frictionImpulse;
+
+            if (ballPtr->getVelocity().x * direction > 0) {
+                ballPtr->getVelocity().x = 0.0f;
+            }
+        }
     }
 }
