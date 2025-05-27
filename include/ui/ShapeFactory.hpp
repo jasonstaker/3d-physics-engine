@@ -14,6 +14,6 @@ public:
     ShapeFactory();
 
     // functions
-    unique_ptr<sf::Shape> createShape(const shared_ptr<Entity>& entity) const;
+    static unique_ptr<sf::Shape> createShape(const shared_ptr<Entity>& entity);
 
 };

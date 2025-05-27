@@ -8,7 +8,7 @@ using namespace std;
 
 ShapeFactory::ShapeFactory() {}
 
-unique_ptr<sf::Shape> ShapeFactory::createShape(const shared_ptr<Entity>& entity) const {
+unique_ptr<sf::Shape> ShapeFactory::createShape(const shared_ptr<Entity>& entity) {
     auto ball = dynamic_pointer_cast<Ball>(entity);
     float radius = ball->getRadius();
     auto circle = make_unique<sf::CircleShape>(radius);

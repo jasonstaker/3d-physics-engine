@@ -36,6 +36,6 @@ void Renderer::render(const vector<shared_ptr<Entity>>& entities) {
 }
 
 void Renderer::renderEntity(const shared_ptr<Entity>& entity) {
-    auto drawnEntity = shapeFactory.createShape(entity);
+    auto drawnEntity = entity->render();
     window->draw(*drawnEntity);
 }
