@@ -88,20 +88,12 @@ void Renderer::setQuadtree(const shared_ptr<Quadtree>& qt) {
     debugQuadtree = move(qt);
 }
 
-void Renderer::processEvents() {
-    while (const std::optional<sf::Event> event = window->pollEvent()) {
-        if (event->is<sf::Event::Closed>()) {
-            window->close();
-        } else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
-            if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
-                window->close();
-            } else if (keyPressed->scancode == sf::Keyboard::Scancode::Q) {
-                Config::renderQT = !Config::renderQT;
-            } else if (keyPressed->scancode == sf::Keyboard::Scancode::P) {
-                Config::paused = !Config::paused;
-            } else if (keyPressed->scancode == sf::Keyboard::Scancode::Space) {
-                Config::stepOnceRequested = true;
-            }
-        }
+std::vector<sf::Event> Renderer::pollEvents() {
+    std::vector<sf::Event> events;
+    
+    while (const auto event = window->pollEvent()) {
+        events.push_back(*event);
     }
+    return events;
 }
+

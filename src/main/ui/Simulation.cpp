@@ -1,40 +1,54 @@
 // Simulation.cpp
 #include "Simulation.hpp"
+#include <random>
+#include <chrono>
+using namespace std::chrono;
 
-Simulation::Simulation() : world(Config::windowWidth, Config::windowHeight, {}) {
-    std::mt19937 rng{std::random_device{}()};
+Simulation::Simulation()
+    : world(Config::windowWidth, Config::windowHeight, {}),
+      renderer(Config::windowWidth, Config::windowHeight),
+      rng(std::random_device{}())
+{
+    placedPositions.reserve(Config::numBalls);
+    for (int i = 0; i < Config::numBalls; ++i) {
+        if (!spawnBallWithoutClash(placedPositions)) break;
+    }
+}
+
+Vec Simulation::getRandomPosition() {
     std::uniform_real_distribution<float> distX(Config::spawnMargin, Config::windowWidth  - Config::spawnMargin);
     std::uniform_real_distribution<float> distY(Config::spawnMargin, Config::windowHeight - Config::spawnMargin);
+    return Vec{ distX(rng), distY(rng) };
+}
+
+Vec Simulation::getRandomVelocity() {
     std::uniform_real_distribution<float> distV(-150.0f, 150.0f);
+    return Vec{ distV(rng), distV(rng) };
+}
 
-    std::vector<Vec> placed;
-    placed.reserve(Config::numBalls);
-
-    for (int i = 0; i < Config::numBalls; ++i) {
-        bool ok = false;
-        for (int att = 0; att < Config::maxAttempts; ++att) {
-            Vec p{ distX(rng), distY(rng) };
-            bool clash = false;
-            for (auto& q : placed) {
-                if ((p - q).norm() < Config::radius * 2.0f) {
-                    clash = true;
-                    break;
-                }
-            }
-            if (!clash) {
-                placed.push_back(p);
-                Vec v{ distV(rng), distV(rng) };
-                world.addEntity(std::make_shared<CircleEntity>(p, v, Vec(), 1.0f, Config::radius));
-                ok = true;
+bool Simulation::spawnBallWithoutClash(std::vector<Vec>& placed) {
+    for (int att = 0; att < Config::maxAttempts; ++att) {
+        Vec p = getRandomPosition();
+        bool clash = false;
+        for (const Vec& q : placed) {
+            if ((p - q).norm() < Config::radius * 2.0f) {
+                clash = true;
                 break;
             }
         }
-        if (!ok) {
-            break;
+        if (!clash) {
+            placed.push_back(p);
+            world.addEntity(std::make_shared<CircleEntity>(p, getRandomVelocity(), Vec(), 1.0f, Config::radius));
+            return true;
         }
     }
+    return false;
+}
 
-    renderer = Renderer(Config::windowWidth, Config::windowHeight);
+void Simulation::spawnRandomBall() {
+    Vec p = getRandomPosition();
+    Vec v = getRandomVelocity();
+    world.addEntity(std::make_shared<CircleEntity>(p, v, Vec(), 1.0f, Config::radius));
 }
 
 void Simulation::run() {
@@ -49,7 +63,7 @@ void Simulation::run() {
             break;
         }
 
-        renderer.processEvents();
+        processEvents();
 
         auto currentTime = high_resolution_clock::now();
         float frameTime = duration<float>(currentTime - lastTime).count();
@@ -75,6 +89,39 @@ void Simulation::run() {
             lastRenderTime = currentTime;
             renderer.setQuadtree(world.getQuadtree());
             renderer.render(world.getEntities());
+        }
+    }
+}
+
+void Simulation::processEvents() {
+    for (const sf::Event& event : renderer.pollEvents()) {
+        if (event.is<sf::Event::Closed>()) {
+            Config::running = false;
+        } else if (const auto* keyPressed = event.getIf<sf::Event::KeyPressed>()) {
+            switch (keyPressed->scancode) {
+                case sf::Keyboard::Scancode::Escape:
+                    Config::running = false;
+                    break;
+                case sf::Keyboard::Scancode::Q:
+                    Config::renderQT = !Config::renderQT;
+                    break;
+                case sf::Keyboard::Scancode::P:
+                    Config::paused = !Config::paused;
+                    break;
+                case sf::Keyboard::Scancode::Space:
+                    Config::stepOnceRequested = true;
+                    break;
+                case sf::Keyboard::Scancode::C:
+                    placedPositions = {};
+
+                    for (auto& entity : world.getEntities()) {
+                        placedPositions.push_back(entity->getPosition());
+                    }
+                    spawnBallWithoutClash(placedPositions);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

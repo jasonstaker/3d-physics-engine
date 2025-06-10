@@ -19,11 +19,19 @@ public:
 
     // functions
     void run();
+    void spawnRandomBall();
+    bool spawnBallWithoutClash(std::vector<Vec>& placed);
+    void processEvents();
 
 private:
 
     // fields
     World world;
     Renderer renderer;
+    std::vector<Vec> placedPositions;
+    std::mt19937 rng;
+
+    Vec getRandomPosition();
+    Vec getRandomVelocity();
 
 };
