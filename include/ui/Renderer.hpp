@@ -18,6 +18,7 @@ public:
     // functions
     void render(const vector<shared_ptr<Entity>>& entities);
     void renderEntity(const shared_ptr<Entity>& entity);
+    void drawOverlay(int entityCount, float fps);
 
 private:
 
@@ -26,4 +27,6 @@ private:
     unsigned int height;
     sf::RenderWindow* window;
     ShapeFactory shapeFactory;
+    sf::Clock fpsClock;
+    sf::Font fpsFont;
 };
