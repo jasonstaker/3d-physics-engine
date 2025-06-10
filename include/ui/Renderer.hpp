@@ -23,6 +23,7 @@ public:
     void drawOverlay(int entityCount, float fps);
     void drawQuadtree(const Quadtree& qt);
     void setQuadtree(const shared_ptr<Quadtree>& qt);
+    void processEvents();
 
 private:
 

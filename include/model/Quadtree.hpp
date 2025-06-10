@@ -15,7 +15,7 @@ class Quadtree {
     int capacity;
     vector<shared_ptr<Entity>> objects;
     bool divided;
-    unique_ptr<Quadtree> northeast, northwest, southeast, southwest;
+    shared_ptr<Quadtree> northeast, northwest, southeast, southwest;
 
 public:
 
@@ -27,5 +27,7 @@ public:
     void query(const AABB& range, vector<shared_ptr<Entity>>& out);
     void subdivide();
     void clear();
+    AABB getBoundary() const;
+    vector<shared_ptr<Quadtree>> getChildren() const;
     
 };

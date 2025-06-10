@@ -38,36 +38,37 @@ Simulation::Simulation() : world(Config::windowWidth, Config::windowHeight, {}) 
 }
 
 void Simulation::run() {
-    // temporary
     float total = 0.0f;
-    //
-
     auto lastRenderTime = high_resolution_clock::now();
     auto lastTime = lastRenderTime;
-
     float accumulator = 0.0f;
 
-    bool running = true;
-    while (running) {
-        // temporary
-            if (total >= Config::simulationRunTime) {
-                running = false;
-                break;
-            }
-        //
-        
+    while (Config::running) {
+        if (total >= Config::simulationRunTime) {
+            Config::running = false;
+            break;
+        }
+
+        renderer.processEvents();
+
         auto currentTime = high_resolution_clock::now();
         float frameTime = duration<float>(currentTime - lastTime).count();
         lastTime = currentTime;
-
         frameTime = std::min(frameTime, 0.25f);
 
-        accumulator += frameTime;
+        if (!Config::paused || Config::stepOnceRequested) {
+            accumulator += frameTime;
 
-        while (accumulator >= Config::fixedTimeStep) {
-            world.update(Config::fixedTimeStep);
-            accumulator -= Config::fixedTimeStep;
-            total += Config::fixedTimeStep;
+            while (accumulator >= Config::fixedTimeStep) {
+                world.update(Config::fixedTimeStep);
+                accumulator -= Config::fixedTimeStep;
+                total += Config::fixedTimeStep;
+
+                if (Config::paused && Config::stepOnceRequested) {
+                    Config::stepOnceRequested = false;
+                    break;
+                }
+            }
         }
 
         if (duration<double, std::milli>(currentTime - lastRenderTime).count() >= Config::frameDuration) {
@@ -76,5 +77,4 @@ void Simulation::run() {
             renderer.render(world.getEntities());
         }
     }
-
 }

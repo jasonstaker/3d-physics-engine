@@ -22,18 +22,6 @@ void Renderer::render(const vector<shared_ptr<Entity>>& entities) {
     float fps = dt > 0.f ? 1.f / dt : 0.f;
 
     if (window->isOpen()) {
-        if (const std::optional event = window->pollEvent()) {
-            if (event->is<sf::Event::Closed>()) {
-                window->close();
-            } else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
-                if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
-                    window->close();
-                } else if (keyPressed->scancode == sf::Keyboard::Scancode::Q) {
-                    Config::renderQT = !Config::renderQT;
-                }
-            }
-        }
-
         window->clear();
 
         for (shared_ptr<Entity> entity : entities) {
@@ -43,6 +31,8 @@ void Renderer::render(const vector<shared_ptr<Entity>>& entities) {
         drawOverlay(static_cast<int>(entities.size()), fps);
 
         window->display();
+    } else {
+        Config::running = false;
     }
 }
 
@@ -96,4 +86,22 @@ void Renderer::drawQuadtree(const Quadtree& qt) {
 
 void Renderer::setQuadtree(const shared_ptr<Quadtree>& qt) {
     debugQuadtree = move(qt);
+}
+
+void Renderer::processEvents() {
+    while (const std::optional<sf::Event> event = window->pollEvent()) {
+        if (event->is<sf::Event::Closed>()) {
+            window->close();
+        } else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
+            if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
+                window->close();
+            } else if (keyPressed->scancode == sf::Keyboard::Scancode::Q) {
+                Config::renderQT = !Config::renderQT;
+            } else if (keyPressed->scancode == sf::Keyboard::Scancode::P) {
+                Config::paused = !Config::paused;
+            } else if (keyPressed->scancode == sf::Keyboard::Scancode::Space) {
+                Config::stepOnceRequested = true;
+            }
+        }
+    }
 }
