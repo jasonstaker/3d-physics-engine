@@ -13,6 +13,10 @@ void World::update(float dt) {
     collision.update(entities);
 }
 
+void World::clearEntities() {
+    entities = {};
+}
+
 int World::getWidth() { return width; }
 
 int World::getHeight() { return height; }

@@ -12,8 +12,8 @@ void Physics::updateEntity(const shared_ptr<Entity>& entity, float dt) {
     Vec& vel = entity->getVelocity();
     Vec& pos = entity->getPosition();
 
-    pos = pos + (vel * dt * Config::timeScale);
-    vel = vel + (acc * dt * Config::timeScale);
+    pos = pos + (vel * dt * Config::timeScale * Config::timeScaleMultiplier);
+    vel = vel + (acc * dt * Config::timeScale * Config::timeScaleMultiplier);
     acc = (Config::gravity + getLinearDragVec(entity));
     
 }

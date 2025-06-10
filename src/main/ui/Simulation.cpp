@@ -119,6 +119,24 @@ void Simulation::processEvents() {
                     }
                     spawnBallWithoutClash(placedPositions);
                     break;
+                case sf::Keyboard::Scancode::Backspace:
+                    world.clearEntities();
+                    break;
+                case sf::Keyboard::Scancode::T:
+                    Config::timeScaleMultiplier =
+                        (Config::timeScaleMultiplier == 1.f)
+                            ? .5f
+                            : 1.f;
+                    break;
+                case sf::Keyboard::Scancode::V:
+                    Config::showVelocityColors = !Config::showVelocityColors;
+                    break;
+                case sf::Keyboard::Scancode::F:
+                    Config::showFPS = !Config::showFPS;
+                    break;
+                case sf::Keyboard::Scancode::H:
+                    Config::showHelpOverlay = !Config::showHelpOverlay;
+                    break;
                 default:
                     break;
             }

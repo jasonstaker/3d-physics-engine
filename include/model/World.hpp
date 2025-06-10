@@ -18,6 +18,7 @@ public:
     // functions
     void addEntity(shared_ptr<Entity> entity);
     void update(float dt);
+    void clearEntities();
     int getWidth();
     int getHeight();
     const vector<shared_ptr<Entity>>& getEntities() const;

@@ -21,8 +21,8 @@ namespace Config {
     constexpr float targetFPS = 60.0f;
     extern const double frameDuration;
     extern const float fixedTimeStep;
-    constexpr int numBalls = 500;
-    constexpr float radius = 20.0f;
+    constexpr int numBalls = 150;
+    constexpr float radius = 50.0f;
     constexpr float spawnMargin = radius;
     constexpr int maxAttempts = 5000;
     constexpr int qtSplitThreshold = 4;
@@ -33,4 +33,8 @@ namespace Config {
     extern bool paused;
     extern bool stepOnceRequested;
     extern bool running;
+    extern bool showFPS;
+    extern bool showHelpOverlay;
+    extern bool showVelocityColors;
+    extern float timeScaleMultiplier;
 }
