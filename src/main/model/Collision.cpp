@@ -20,7 +20,7 @@ void Collision::update(std::vector<std::shared_ptr<Entity>>& entities) {
             continue;
         }
 
-        auto ballPtr = std::static_pointer_cast<Ball>(entityPtr);
+        auto ballPtr = std::static_pointer_cast<CircleEntity>(entityPtr);
         float radiusA = ballPtr->getRadius();
         Vec position = ballPtr->getPosition();
 
@@ -62,8 +62,8 @@ void Collision::checkAndResolveBetween(std::shared_ptr<Entity> entityOne,
 // for circles only currently
 bool Collision::checkCollisionBetween(const std::shared_ptr<Entity>& entityOne,
                                       const std::shared_ptr<Entity>& entityTwo) {
-    auto ballOne = std::static_pointer_cast<Ball>(entityOne);
-    auto ballTwo = std::static_pointer_cast<Ball>(entityTwo);
+    auto ballOne = std::static_pointer_cast<CircleEntity>(entityOne);
+    auto ballTwo = std::static_pointer_cast<CircleEntity>(entityTwo);
     Vec delta = ballOne->getPosition() - ballTwo->getPosition();
     float distSq = delta.dot(delta);
     float radiusSum = ballOne->getRadius() + ballTwo->getRadius();
@@ -71,7 +71,7 @@ bool Collision::checkCollisionBetween(const std::shared_ptr<Entity>& entityOne,
 }
 
 bool Collision::checkCollisionBorder(const std::shared_ptr<Entity>& entity) {
-    auto ballPtr = std::static_pointer_cast<Ball>(entity);
+    auto ballPtr = std::static_pointer_cast<CircleEntity>(entity);
     return ((ballPtr->getPosition().x + ballPtr->getRadius()) >= Config::windowWidth)
         || ((ballPtr->getPosition().y + ballPtr->getRadius()) >= Config::windowHeight)
         || ((ballPtr->getPosition().x - ballPtr->getRadius()) <= 0)
@@ -80,8 +80,8 @@ bool Collision::checkCollisionBorder(const std::shared_ptr<Entity>& entity) {
 
 float Collision::distance(const std::shared_ptr<Entity> entityOne,
                          const std::shared_ptr<Entity> entityTwo) {
-    auto ballOne = std::static_pointer_cast<Ball>(entityOne);
-    auto ballTwo = std::static_pointer_cast<Ball>(entityTwo);
+    auto ballOne = std::static_pointer_cast<CircleEntity>(entityOne);
+    auto ballTwo = std::static_pointer_cast<CircleEntity>(entityTwo);
     Vec distanceVector = ballOne->getPosition() - ballTwo->getPosition();
 
     return (distanceVector.norm()
@@ -132,7 +132,7 @@ void Collision::resolveCollisionBetween(std::shared_ptr<Entity>& entityOne,
 }
 
 void Collision::resolveCollisionBorder(std::shared_ptr<Entity>& entity) {
-    auto ballPtr = std::static_pointer_cast<Ball>(entity);
+    auto ballPtr = std::static_pointer_cast<CircleEntity>(entity);
     float impulseMagnitude = ballPtr->getMass();
 
     // Right border
@@ -179,7 +179,7 @@ void Collision::resolveCollisionBorder(std::shared_ptr<Entity>& entity) {
 }
 
 void Collision::applyContinuousFrictionIfOnBottom(shared_ptr<Entity>& entity) {
-    auto ballPtr = static_pointer_cast<Ball>(entity);
+    auto ballPtr = static_pointer_cast<CircleEntity>(entity);
 
     float bottomY = ballPtr->getPosition().y + ballPtr->getRadius();
     if (abs(bottomY - Config::windowHeight) < 0.5f) {

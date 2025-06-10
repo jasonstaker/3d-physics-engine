@@ -24,7 +24,7 @@ Simulation::Simulation() : world(Config::windowWidth, Config::windowHeight, {}) 
             if (!clash) {
                 placed.push_back(p);
                 Vec v{ distV(rng), distV(rng) };
-                world.addEntity(std::make_shared<Ball>(p, v, Vec(), 1.0f, Config::radius));
+                world.addEntity(std::make_shared<CircleEntity>(p, v, Vec(), 1.0f, Config::radius));
                 ok = true;
                 break;
             }

@@ -2,7 +2,7 @@
 
 #include "Entity.hpp"
 #include "Quadtree.hpp"
-#include "Ball.hpp"
+#include "CircleEntity.hpp"
 #include "Config.hpp"
 #include "Physics.hpp"
 #include "AABB.hpp"

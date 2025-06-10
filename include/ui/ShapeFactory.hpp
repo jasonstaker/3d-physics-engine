@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include "Entity.hpp"
-#include "Ball.hpp"
+#include "CircleEntity.hpp"
 #include <memory>
 
 using namespace std;
