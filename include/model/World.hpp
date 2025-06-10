@@ -21,6 +21,7 @@ public:
     int getWidth();
     int getHeight();
     const vector<shared_ptr<Entity>>& getEntities() const;
+    shared_ptr<Quadtree> getQuadtree() const;
 
     
 private:

@@ -17,12 +17,15 @@ namespace Config {
 
     // Simulation variables
     static constexpr float simulationRunTime = 6.0f;
-    static constexpr float renderFrequencyMultiplier = 4.0f;
+    static constexpr float renderFrequencyMultiplier = 3.0f;
     static constexpr float targetFPS = 60.0f;
     const double frameDuration = 1000.0 / targetFPS;
     const float fixedTimeStep = 1.0f / (targetFPS*renderFrequencyMultiplier);
     static const int numBalls = 500;
-    static const float radius = 15.0f;
+    static const float radius = 20.0f;
     static const float spawnMargin = radius;
     static const int maxAttempts = 5000;
+    static const int qtSplitThreshold = 4;
+    static bool renderQT = false;
+    static bool showAABBs = false;
 }

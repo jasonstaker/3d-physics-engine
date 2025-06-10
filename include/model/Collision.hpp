@@ -17,7 +17,7 @@ using namespace std;
 class Collision {
 
     // fields
-    Quadtree qt = Quadtree(AABB(Vec(0, 0), Vec(Config::windowWidth, Config::windowHeight)), 4);
+    Quadtree qt = Quadtree(AABB(Vec(0, 0), Vec(Config::windowWidth, Config::windowHeight)), Config::qtSplitThreshold);
     vector<thread> threads;
 
 public:
@@ -34,5 +34,6 @@ public:
     static void resolveCollisionBorder(shared_ptr<Entity>& entity);
     static void checkAndResolveBetween(shared_ptr<Entity> entityOne, shared_ptr<Entity> entityTwo);
     void applyContinuousFrictionIfOnBottom(std::shared_ptr<Entity>& entity);
+    shared_ptr<Quadtree> getQuadtree() const;
     
 };

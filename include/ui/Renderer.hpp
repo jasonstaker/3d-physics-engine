@@ -3,6 +3,8 @@
 #include "SFML/Graphics.hpp"
 #include "Entity.hpp"
 #include "ShapeFactory.hpp"
+#include "Quadtree.hpp"
+#include "Config.hpp"
 #include <vector>
 #include <memory>
 
@@ -19,6 +21,8 @@ public:
     void render(const vector<shared_ptr<Entity>>& entities);
     void renderEntity(const shared_ptr<Entity>& entity);
     void drawOverlay(int entityCount, float fps);
+    void drawQuadtree(const Quadtree& qt);
+    void setQuadtree(const shared_ptr<Quadtree>& qt);
 
 private:
 
@@ -29,4 +33,5 @@ private:
     ShapeFactory shapeFactory;
     sf::Clock fpsClock;
     sf::Font fpsFont;
+    shared_ptr<Quadtree> debugQuadtree = nullptr;
 };

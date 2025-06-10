@@ -28,6 +28,8 @@ void Renderer::render(const vector<shared_ptr<Entity>>& entities) {
             } else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
                 if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
                     window->close();
+                } else if (keyPressed->scancode == sf::Keyboard::Scancode::Q) {
+                    Config::renderQT = !Config::renderQT;
                 }
             }
         }
@@ -63,8 +65,35 @@ void Renderer::drawOverlay(int entityCount, float fps) {
     entityCountText.setFillColor(sf::Color::White);
     entityCountText.setOutlineColor(sf::Color::Black);
     entityCountText.setOutlineThickness(1.f);
-    entityCountText.setPosition({8.f, 36.f}); // 4 + 28 + 4 = 36
+    entityCountText.setPosition({8.f, 36.f});
+
+    if(debugQuadtree && Config::renderQT) {
+        drawQuadtree(*debugQuadtree);
+    }
 
     window->draw(fpsText);
     window->draw(entityCountText);
+}
+
+void Renderer::drawQuadtree(const Quadtree& qt) {
+    AABB box = qt.getBoundary();
+    float width = box.bottomRight.x - box.topLeft.x;
+    float height = box.bottomRight.y - box.topLeft.y;
+    sf::FloatRect bounds = sf::FloatRect(sf::Vector2f(box.topLeft.x, box.topLeft.y), sf::Vector2f(width, height));
+
+    sf::RectangleShape rect;
+    rect.setPosition({bounds.position.x, bounds.position.y});
+    rect.setSize({bounds.size.x, bounds.size.y});
+    rect.setFillColor(sf::Color::Transparent);
+    rect.setOutlineColor(sf::Color(0, 255, 0, 128));
+    rect.setOutlineThickness(1.f);
+    window->draw(rect);
+
+    for (const shared_ptr<Quadtree> child : qt.getChildren()) {
+        drawQuadtree(*child);
+    }
+}
+
+void Renderer::setQuadtree(const shared_ptr<Quadtree>& qt) {
+    debugQuadtree = move(qt);
 }

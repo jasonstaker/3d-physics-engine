@@ -195,3 +195,7 @@ void Collision::applyContinuousFrictionIfOnBottom(shared_ptr<Entity>& entity) {
         }
     }
 }
+
+shared_ptr<Quadtree> Collision::getQuadtree() const { 
+    return make_shared<Quadtree>(qt);
+}

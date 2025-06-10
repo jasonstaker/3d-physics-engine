@@ -34,22 +34,22 @@ void Quadtree::subdivide() {
     float midX = (topLeft.x + bottomRight.x) / 2.0f;
     float midY = (topLeft.y + bottomRight.y) / 2.0f;
 
-    northwest = make_unique<Quadtree>(
+    northwest = make_shared<Quadtree>(
         AABB(topLeft, Vec(midX, midY)),
         capacity
     );
 
-    northeast = make_unique<Quadtree>(
+    northeast = make_shared<Quadtree>(
         AABB(Vec(midX, topLeft.y), Vec(bottomRight.x, midY)),
         capacity
     );
 
-    southwest = make_unique<Quadtree>(
+    southwest = make_shared<Quadtree>(
         AABB(Vec(topLeft.x, midY), Vec(midX, bottomRight.y)),
         capacity
     );
 
-    southeast = make_unique<Quadtree>(
+    southeast = make_shared<Quadtree>(
         AABB(Vec(midX, midY), bottomRight),
         capacity
     );
@@ -90,4 +90,19 @@ void Quadtree::clear() {
 
         divided = false;
     }
+}
+
+AABB Quadtree::getBoundary() const { return boundary; }
+
+vector<shared_ptr<Quadtree>> Quadtree::getChildren() const {
+    vector<shared_ptr<Quadtree>> children;
+
+    if (divided) {
+        children.push_back(northwest);
+        children.push_back(northeast);
+        children.push_back(southwest);
+        children.push_back(southeast);
+    }
+
+    return children;
 }

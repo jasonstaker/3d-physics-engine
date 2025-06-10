@@ -72,6 +72,7 @@ void Simulation::run() {
 
         if (duration<double, std::milli>(currentTime - lastRenderTime).count() >= Config::frameDuration) {
             lastRenderTime = currentTime;
+            renderer.setQuadtree(world.getQuadtree());
             renderer.render(world.getEntities());
         }
     }
