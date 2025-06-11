@@ -9,7 +9,7 @@ namespace Config {
     bool paused = false;
     bool stepOnceRequested = false;
     bool running = true;
-    bool showFPS = false;
+    bool showOverlay = false;
     bool showHelpOverlay = false;
     bool showVelocityColors = false;
     float timeScaleMultiplier = 1.0f;

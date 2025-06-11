@@ -132,7 +132,7 @@ void Simulation::processEvents() {
                     Config::showVelocityColors = !Config::showVelocityColors;
                     break;
                 case sf::Keyboard::Scancode::F:
-                    Config::showFPS = !Config::showFPS;
+                    Config::showOverlay = !Config::showOverlay;
                     break;
                 case sf::Keyboard::Scancode::H:
                     Config::showHelpOverlay = !Config::showHelpOverlay;

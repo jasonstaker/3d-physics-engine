@@ -30,7 +30,7 @@ namespace Config {
     extern bool paused;
     extern bool stepOnceRequested;
     extern bool running;
-    extern bool showFPS;
+    extern bool showOverlay;
     extern bool showHelpOverlay;
     extern bool showVelocityColors;
     extern float timeScaleMultiplier;

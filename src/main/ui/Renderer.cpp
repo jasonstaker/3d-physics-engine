@@ -28,7 +28,13 @@ void Renderer::render(const vector<shared_ptr<Entity>>& entities) {
             renderEntity(entity);
         }
         
-        drawOverlay(static_cast<int>(entities.size()), fps);
+        if (Config::showOverlay) {
+            drawOverlay(static_cast<int>(entities.size()), fps);
+        }
+        
+        if (debugQuadtree && Config::renderQT) {
+            drawQuadtree(*debugQuadtree);
+        }
 
         window->display();
     } else {
@@ -56,10 +62,6 @@ void Renderer::drawOverlay(int entityCount, float fps) {
     entityCountText.setOutlineColor(sf::Color::Black);
     entityCountText.setOutlineThickness(1.f);
     entityCountText.setPosition({8.f, 36.f});
-
-    if(debugQuadtree && Config::renderQT) {
-        drawQuadtree(*debugQuadtree);
-    }
 
     window->draw(fpsText);
     window->draw(entityCountText);
