@@ -12,7 +12,7 @@ Renderer::Renderer() {}
 
 Renderer::Renderer(unsigned int width, unsigned int height) : width(width), height(height) {
     window = new sf::RenderWindow(sf::VideoMode({width, height}), "Physics Engine");
-    if(!fpsFont.openFromFile("../assets/fonts/arial.ttf")) {
+    if(!font.openFromFile("../assets/fonts/arial.ttf")) {
         return;
     }  
 }
@@ -36,6 +36,10 @@ void Renderer::render(const vector<shared_ptr<Entity>>& entities) {
             drawQuadtree(*debugQuadtree);
         }
 
+        if (Config::showHelpOverlay) {
+            drawHelpOverlay();
+        }
+
         window->display();
     } else {
         Config::running = false;
@@ -49,15 +53,15 @@ void Renderer::renderEntity(const shared_ptr<Entity>& entity) {
 }
 
 void Renderer::drawOverlay(int entityCount, float fps) {
-    sf::Text fpsText(fpsFont, "FPS: " + std::to_string(static_cast<int>(fps)));
+    sf::Text fpsText(font, "FPS: " + std::to_string(static_cast<int>(fps)));
     fpsText.setCharacterSize(28);
     fpsText.setFillColor(sf::Color::White);
     fpsText.setOutlineColor(sf::Color::Black);
     fpsText.setOutlineThickness(1.f);
     fpsText.setPosition({8.f, 4.f});
 
-    sf::Text entityCountText(fpsFont, "Entities: " + std::to_string(entityCount));
-    entityCountText.setCharacterSize(28);
+    sf::Text entityCountText(font, "Entities: " + std::to_string(entityCount));
+    entityCountText.setCharacterSize(30);
     entityCountText.setFillColor(sf::Color::White);
     entityCountText.setOutlineColor(sf::Color::Black);
     entityCountText.setOutlineThickness(1.f);
@@ -99,3 +103,35 @@ std::vector<sf::Event> Renderer::pollEvents() {
     return events;
 }
 
+void Renderer::drawHelpOverlay() {
+    sf::RectangleShape backdrop({ float(width), float(height) });
+    backdrop.setFillColor(sf::Color(0, 0, 0, 150));
+    window->draw(backdrop);
+
+    struct { const char* key; const char* desc; } items[] = {
+        { "P",         "Pause / Resume Simulation"         },
+        { "Space",     "Step One Frame"                    },
+        { "C",         "Spawn Ball Without Clash"          },
+        { "Backspace","Clear All Entities"                },
+        { "T",         "Toggle Time Scale"                 },
+        { "V",         "Toggle Velocity Colors"            },
+        { "F",         "Toggle FPS/Entities Overlay"       },
+        { "Q",         "Toggle Quadtree Debug"             },
+        { "H",         "Toggle Help Overlay"               },
+        { "Escape",    "Exit Simulation"                   },
+    };
+
+    const float startX = 10.f;
+    const float startY = 16.f;
+    const float lineHeight = 45.f;
+
+    for (size_t i = 0; i < std::size(items); ++i) {
+        sf::Text line(font, std::string(items[i].key) + " : " + items[i].desc);
+        line.setCharacterSize(35);
+        line.setFillColor(sf::Color::White);
+        line.setOutlineColor(sf::Color::Black);
+        line.setOutlineThickness(1.f);
+        line.setPosition({ startX, startY + i * lineHeight });
+        window->draw(line);
+    }
+}

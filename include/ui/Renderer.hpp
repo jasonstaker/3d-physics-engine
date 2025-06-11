@@ -23,6 +23,7 @@ public:
     void drawOverlay(int entityCount, float fps);
     void drawQuadtree(const Quadtree& qt);
     void setQuadtree(const shared_ptr<Quadtree>& qt);
+    void drawHelpOverlay();
     vector<sf::Event> pollEvents();
 
 private:
@@ -33,6 +34,6 @@ private:
     sf::RenderWindow* window;
     ShapeFactory shapeFactory;
     sf::Clock fpsClock;
-    sf::Font fpsFont;
+    sf::Font font;
     shared_ptr<Quadtree> debugQuadtree = nullptr;
 };
