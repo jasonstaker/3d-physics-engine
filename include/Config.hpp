@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Vec.hpp"
-
 namespace Config {
 
     // Window dimensions
@@ -10,7 +8,6 @@ namespace Config {
 
     // Physics parameters
     constexpr float timeScale = 6.0f;
-    extern Vec gravity;
     constexpr float dragCoefficient = 0.01f;
     constexpr float restitution = .8f;
     constexpr float frictionCoefficient = 1.0f;

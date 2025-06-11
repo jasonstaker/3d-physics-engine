@@ -24,5 +24,5 @@ int World::getHeight() { return height; }
 const vector<shared_ptr<Entity>>& World::getEntities() const { return entities; }
 
 shared_ptr<Quadtree> World::getQuadtree() const {
-    return collision.getQuadtree(); // returns a copy (cheap for shared_ptr)
+    return collision.getQuadtree();
 }

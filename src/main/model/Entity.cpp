@@ -13,21 +13,26 @@ float Entity::getMass() { return mass; }
 std::shared_ptr<sf::Shape> Entity::render() {
     if (!drawable) {
         drawable = ShapeFactory::createShape(shared_from_this());
+        baseColor = std::make_shared<sf::Color>(drawable->getFillColor());
     }
 
     drawable->setPosition({position.x, position.y});
+    
+    if (Config::showVelocityColors) {
+        float speed = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+        float maxSpeed = 200.f;
+        float t = std::min(speed / maxSpeed, 1.f);
 
-    float speed = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
-    float maxSpeed = 200.f;
-    float t = std::min(speed / maxSpeed, 1.f);
+        sf::Color velocityColor(
+            (int)(255 * t),
+            0,
+            (int)(255 * (1.f - t))
+        );
 
-    sf::Color color(
-        (int)(255 * t),
-        0,
-        (int)(255 * (1.f - t))
-    );
-
-    drawable->setFillColor(color);
+        drawable->setFillColor(velocityColor);
+    } else {
+        drawable->setFillColor(*baseColor);
+    }
 
     return drawable;
 }

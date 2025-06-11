@@ -2,7 +2,9 @@
 
 #include "Vec.hpp"
 #include <memory>
+#include <random>
 #include "SFML/Graphics.hpp"
+#include "Config.hpp"
 
 class Entity : public std::enable_shared_from_this<Entity> {
 
@@ -10,6 +12,7 @@ class Entity : public std::enable_shared_from_this<Entity> {
     Vec position, velocity, acceleration;
     float mass;
     std::shared_ptr<sf::Shape> drawable;
+    std::shared_ptr<sf::Color> baseColor;
     
 public:
 

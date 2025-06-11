@@ -184,7 +184,7 @@ void Collision::applyContinuousFrictionIfOnBottom(shared_ptr<Entity>& entity) {
     float bottomY = ballPtr->getPosition().y + ballPtr->getRadius();
     if (abs(bottomY - Config::windowHeight) < 0.5f) {
         if (abs(ballPtr->getVelocity().x) > 0.0f) {
-            float frictionImpulse = Config::gravity.y * Config::frictionCoefficient * Config::fixedTimeStep * Config::timeScale;
+            float frictionImpulse = Vec(0, 9.81f).y * Config::frictionCoefficient * Config::fixedTimeStep * Config::timeScale;
             float direction = (ballPtr->getVelocity().x > 0) ? -1.0f : 1.0f;
 
             ballPtr->getVelocity().x += direction * frictionImpulse;
