@@ -1,9 +1,17 @@
 // Main.cpp
+#include "Config.hpp"
 #include "Simulation.hpp"
+#include <iostream>
 
-using namespace std;
+int main(int argc, char** argv) {
+    std::string cfgPath = (argc > 1 ? argv[1] : "config.json");
+    try {
+        Config::loadFromFile(cfgPath);
+    } catch (const std::exception &e) {
+        std::cerr << "Error loading config: " << e.what() << "\n";
+        return EXIT_FAILURE;
+    }
 
-int main() {
     Simulation simulation;
     simulation.run();
 

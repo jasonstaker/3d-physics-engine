@@ -1,0 +1,33 @@
+{
+  "window": {
+    "width": 1800,
+    "height": 1200
+  },
+  "physics": {
+    "timeScale": 6.0,
+    "dragCoefficient": 0.01,
+    "restitution": 0.8,
+    "frictionCoefficient": 1.0
+  },
+  "simulation": {
+    "runTime": 6.0,
+    "renderFrequencyMultiplier": 3.0,
+    "targetFPS": 60.0,
+    "numBalls": 150,
+    "radius": 50.0,
+    "spawnMargin": 50.0,
+    "maxAttempts": 5000,
+    "qtSplitThreshold": 4
+  },
+  "flags": {
+    "renderQT": false,
+    "showAABBs": false,
+    "paused": false,
+    "stepOnceRequested": false,
+    "running": true,
+    "showOverlay": false,
+    "showHelpOverlay": false,
+    "showVelocityColors": false,
+    "timeScaleMultiplier": 1.0
+  }
+}

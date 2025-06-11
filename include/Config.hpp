@@ -1,30 +1,32 @@
+// Config.hpp
 #pragma once
 
-namespace Config {
+#include <string>
 
+namespace Config {
     // Window dimensions
-    constexpr unsigned int windowWidth = 1500;
-    constexpr unsigned int windowHeight = 1100;
+    extern unsigned int windowWidth;
+    extern unsigned int windowHeight;
 
     // Physics parameters
-    constexpr float timeScale = 6.0f;
-    constexpr float dragCoefficient = 0.01f;
-    constexpr float restitution = .8f;
-    constexpr float frictionCoefficient = 1.0f;
+    extern float timeScale;
+    extern float dragCoefficient;
+    extern float restitution;
+    extern float frictionCoefficient;
 
     // Simulation variables
-    constexpr float simulationRunTime = 6.0f;
-    constexpr float renderFrequencyMultiplier = 3.0f;
-    constexpr float targetFPS = 60.0f;
-    extern const double frameDuration;
-    extern const float fixedTimeStep;
-    constexpr int numBalls = 150;
-    constexpr float radius = 50.0f;
-    constexpr float spawnMargin = radius;
-    constexpr int maxAttempts = 5000;
-    constexpr int qtSplitThreshold = 4;
-    
-    // Mutable simulation variables
+    extern float simulationRunTime;
+    extern float renderFrequencyMultiplier;
+    extern float targetFPS;
+    extern double frameDuration;
+    extern float fixedTimeStep;
+    extern int numBalls;
+    extern float radius;
+    extern float spawnMargin;
+    extern int maxAttempts;
+    extern int qtSplitThreshold;
+
+    // Mutable simulation flags
     extern bool renderQT;
     extern bool showAABBs;
     extern bool paused;
@@ -34,4 +36,8 @@ namespace Config {
     extern bool showHelpOverlay;
     extern bool showVelocityColors;
     extern float timeScaleMultiplier;
+
+    /// Load all Config:: variables from the given JSON file.
+    /// Throws std::runtime_error if loading/parsing fails.
+    void loadFromFile(const std::string &path);
 }
