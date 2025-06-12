@@ -10,6 +10,13 @@
 using namespace std;
 
 class World {
+
+    // fields
+    int width, height;
+    vector<shared_ptr<Entity>> entities;
+    Physics physics;
+    Collision collision;
+
 public:
 
     // constructors
@@ -23,14 +30,5 @@ public:
     int getHeight();
     const vector<shared_ptr<Entity>>& getEntities() const;
     shared_ptr<Quadtree> getQuadtree() const;
-
-    
-private:
-
-    // fields
-    int width, height;
-    vector<shared_ptr<Entity>> entities;
-    Physics physics;
-    Collision collision;
     
 };

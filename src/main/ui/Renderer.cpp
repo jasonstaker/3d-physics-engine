@@ -17,6 +17,9 @@ Renderer::Renderer(unsigned int width, unsigned int height) : width(width), heig
     }  
 }
 
+// REQUIRES: window open
+// MODIFIES: window contents
+// EFFECTS: draws all entities and overlays each frame
 void Renderer::render(const vector<shared_ptr<Entity>>& entities) {
     float dt = fpsClock.restart().asSeconds();
     float fps = dt > 0.f ? 1.f / dt : 0.f;
@@ -46,12 +49,16 @@ void Renderer::render(const vector<shared_ptr<Entity>>& entities) {
     }
 }
 
-
+// REQUIRES: entity != nullptr
+// EFFECTS: renders a single entity
 void Renderer::renderEntity(const shared_ptr<Entity>& entity) {
     auto drawnEntity = entity->render();
     window->draw(*drawnEntity);
 }
 
+// REQUIRES: font loaded
+// MODIFIES: window
+// EFFECTS: draws FPS and entity count overlay
 void Renderer::drawOverlay(int entityCount, float fps) {
     sf::Text fpsText(font, "FPS: " + std::to_string(static_cast<int>(fps)));
     fpsText.setCharacterSize(28);
@@ -71,6 +78,9 @@ void Renderer::drawOverlay(int entityCount, float fps) {
     window->draw(entityCountText);
 }
 
+// REQUIRES: qt boundary set
+// MODIFIES: window
+// EFFECTS: draws quadtree rectangles recursively
 void Renderer::drawQuadtree(const Quadtree& qt) {
     AABB box = qt.getBoundary();
     float width = box.bottomRight.x - box.topLeft.x;
@@ -90,10 +100,16 @@ void Renderer::drawQuadtree(const Quadtree& qt) {
     }
 }
 
+// REQUIRES: qt != nullptr
+// MODIFIES: debugQuadtree
+// EFFECTS: updates stored quadtree for debug draw
 void Renderer::setQuadtree(const shared_ptr<Quadtree>& qt) {
     debugQuadtree = move(qt);
 }
 
+// REQUIRES: window created
+// MODIFIES: none
+// EFFECTS: polls and returns all events
 std::vector<sf::Event> Renderer::pollEvents() {
     std::vector<sf::Event> events;
     
@@ -103,6 +119,9 @@ std::vector<sf::Event> Renderer::pollEvents() {
     return events;
 }
 
+// REQUIRES: font loaded
+// MODIFIES: window
+// EFFECTS: draws semi-transparent help overlay
 void Renderer::drawHelpOverlay() {
     sf::RectangleShape backdrop({ float(width), float(height) });
     backdrop.setFillColor(sf::Color(0, 0, 0, 150));

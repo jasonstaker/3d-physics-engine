@@ -4,6 +4,9 @@
 
 Collision::Collision() {}
 
+// REQUIRES: entities vector contains valid Entity pointers
+// MODIFIES: qt, entities’ positions & velocities
+// EFFECTS: broad-phase using quadtree, resolves entity–entity and border collisions, applies friction
 void Collision::update(std::vector<std::shared_ptr<Entity>>& entities) {
     qt.clear();
     for (auto& entityPtr : entities) {
@@ -38,7 +41,7 @@ void Collision::update(std::vector<std::shared_ptr<Entity>>& entities) {
                 continue;
             }
             if (entityPtr.get() >= otherPtr.get()) {
-                continue;
+                continue; // avoid double‐checking pairs
             }
 
             checkAndResolveBetween(entityPtr, otherPtr);
@@ -52,6 +55,9 @@ void Collision::update(std::vector<std::shared_ptr<Entity>>& entities) {
     }
 }
 
+// REQUIRES: entities have had collisions detected
+// MODIFIES: entityOne, entityTwo
+// EFFECTS: if collision detected, resolves it
 void Collision::checkAndResolveBetween(std::shared_ptr<Entity> entityOne,
                                        std::shared_ptr<Entity> entityTwo) {
     if (checkCollisionBetween(entityOne, entityTwo)) {
@@ -59,7 +65,8 @@ void Collision::checkAndResolveBetween(std::shared_ptr<Entity> entityOne,
     }
 }
 
-// for circles only currently
+// REQUIRES: entityOne and entityTwo are CircleEntity
+// EFFECTS: returns true if two circles overlap
 bool Collision::checkCollisionBetween(const std::shared_ptr<Entity>& entityOne,
                                       const std::shared_ptr<Entity>& entityTwo) {
     auto ballOne = std::static_pointer_cast<CircleEntity>(entityOne);
@@ -70,6 +77,8 @@ bool Collision::checkCollisionBetween(const std::shared_ptr<Entity>& entityOne,
     return distSq <= radiusSum * radiusSum;
 }
 
+// REQUIRES: entity is at or beyond any window border
+// EFFECTS: returns true if circle touches or crosses window boundary
 bool Collision::checkCollisionBorder(const std::shared_ptr<Entity>& entity) {
     auto ballPtr = std::static_pointer_cast<CircleEntity>(entity);
     return ((ballPtr->getPosition().x + ballPtr->getRadius()) >= Config::windowWidth)
@@ -78,6 +87,8 @@ bool Collision::checkCollisionBorder(const std::shared_ptr<Entity>& entity) {
         || ((ballPtr->getPosition().y - ballPtr->getRadius()) <= 0);
 }
 
+// REQUIRES: two CircleEntity pointers
+// EFFECTS: returns surface‐to‐surface distance (negative if overlapping)
 float Collision::distance(const std::shared_ptr<Entity> entityOne,
                          const std::shared_ptr<Entity> entityTwo) {
     auto ballOne = std::static_pointer_cast<CircleEntity>(entityOne);
@@ -89,6 +100,9 @@ float Collision::distance(const std::shared_ptr<Entity> entityOne,
             - ballTwo->getRadius());
 }
 
+// REQUIRES: a collision exists between entityOne and entityTwo
+// MODIFIES: entityOne.position, entityTwo.position, entityOne.velocity, entityTwo.velocity
+// EFFECTS: separates overlapping circles and updates velocities based on restitution
 void Collision::resolveCollisionBetween(std::shared_ptr<Entity>& entityOne,
                                         std::shared_ptr<Entity>& entityTwo) {
     Vec velocityOne = entityOne->getVelocity();
@@ -131,11 +145,12 @@ void Collision::resolveCollisionBetween(std::shared_ptr<Entity>& entityOne,
     entityTwo->getVelocity() = velocityTwoTangent + velocityTwoNormalAfterVector;
 }
 
+// REQUIRES: entity is at window border
+// MODIFIES: entity.position, entity.velocity
+// EFFECTS: bounces circle off window edges with restitution
 void Collision::resolveCollisionBorder(std::shared_ptr<Entity>& entity) {
     auto ballPtr = std::static_pointer_cast<CircleEntity>(entity);
-    float impulseMagnitude = ballPtr->getMass();
-
-    // Right border
+    // right border
     if ((ballPtr->getPosition().x + ballPtr->getRadius()) >= Config::windowWidth) {
         ballPtr->getVelocity() = Vec(
             ballPtr->getVelocity().x * -1 * Config::restitution,
@@ -146,14 +161,12 @@ void Collision::resolveCollisionBorder(std::shared_ptr<Entity>& entity) {
             ballPtr->getPosition().y
         );
     }
-
-    // Bottom border
+    // bottom border
     if ((ballPtr->getPosition().y + ballPtr->getRadius()) >= Config::windowHeight) {
         ballPtr->getPosition().y = Config::windowHeight - ballPtr->getRadius();
         ballPtr->getVelocity().y *= -Config::restitution;
     }
-
-    // Left border
+    // left border
     if ((ballPtr->getPosition().x - ballPtr->getRadius()) <= 0) {
         ballPtr->getVelocity() = Vec(
             ballPtr->getVelocity().x * -1 * Config::restitution,
@@ -164,8 +177,7 @@ void Collision::resolveCollisionBorder(std::shared_ptr<Entity>& entity) {
             ballPtr->getPosition().y
         );
     }
-
-    // Top border
+    // top border
     if ((ballPtr->getPosition().y - ballPtr->getRadius()) <= 0) {
         ballPtr->getVelocity() = Vec(
             ballPtr->getVelocity().x,
@@ -178,6 +190,9 @@ void Collision::resolveCollisionBorder(std::shared_ptr<Entity>& entity) {
     }
 }
 
+// REQUIRES: entity at bottom edge
+// MODIFIES: entity.velocity.x
+// EFFECTS: applies friction impulse if ball on bottom
 void Collision::applyContinuousFrictionIfOnBottom(shared_ptr<Entity>& entity) {
     auto ballPtr = static_pointer_cast<CircleEntity>(entity);
 
@@ -190,12 +205,13 @@ void Collision::applyContinuousFrictionIfOnBottom(shared_ptr<Entity>& entity) {
             ballPtr->getVelocity().x += direction * frictionImpulse;
 
             if (ballPtr->getVelocity().x * direction > 0) {
-                ballPtr->getVelocity().x = 0.0f;
+                ballPtr->getVelocity().x = 0.0f; // stop if reversed direction
             }
         }
     }
 }
 
+// EFFECTS: returns a copy of the current quadtree
 shared_ptr<Quadtree> Collision::getQuadtree() const { 
     return make_shared<Quadtree>(qt);
 }

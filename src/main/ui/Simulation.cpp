@@ -15,17 +15,22 @@ Simulation::Simulation()
     }
 }
 
+// EFFECTS: returns random position within margins
 Vec Simulation::getRandomPosition() {
     std::uniform_real_distribution<float> distX(Config::spawnMargin, Config::windowWidth  - Config::spawnMargin);
     std::uniform_real_distribution<float> distY(Config::spawnMargin, Config::windowHeight - Config::spawnMargin);
     return Vec{ distX(rng), distY(rng) };
 }
 
+// EFFECTS: returns random velocity vector
 Vec Simulation::getRandomVelocity() {
     std::uniform_real_distribution<float> distV(-150.0f, 150.0f);
     return Vec{ distV(rng), distV(rng) };
 }
 
+// REQUIRES: placed contains existing positions
+// MODIFIES: placed, world.entities
+// EFFECTS: tries to spawn non-overlapping ball; returns success
 bool Simulation::spawnBallWithoutClash(std::vector<Vec>& placed) {
     for (int att = 0; att < Config::maxAttempts; ++att) {
         Vec p = getRandomPosition();
@@ -45,12 +50,18 @@ bool Simulation::spawnBallWithoutClash(std::vector<Vec>& placed) {
     return false;
 }
 
+// REQUIRES: world valid
+// MODIFIES: world.entities
+// EFFECTS: spawns a single random ball
 void Simulation::spawnRandomBall() {
     Vec p = getRandomPosition();
     Vec v = getRandomVelocity();
     world.addEntity(std::make_shared<CircleEntity>(p, v, Vec(), 1.0f, Config::radius));
 }
 
+// REQUIRES: Config.running controls loop
+// MODIFIES: world state, renderer quadtree
+// EFFECTS: runs main simulation loop with fixed timestep and rendering
 void Simulation::run() {
     auto lastRenderTime = high_resolution_clock::now();
     auto lastTime = lastRenderTime;
@@ -86,6 +97,9 @@ void Simulation::run() {
     }
 }
 
+// REQUIRES: window created
+// MODIFIES: Config flags
+// EFFECTS: processes key and close events
 void Simulation::processEvents() {
     for (const sf::Event& event : renderer.pollEvents()) {
         if (event.is<sf::Event::Closed>()) {

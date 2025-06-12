@@ -3,6 +3,8 @@
 #include "CircleEntity.hpp"
 #include <random>
 
+// REQUIRES: entity is CircleEntity
+// EFFECTS: returns a new circle shape with random color and correct origin
 std::unique_ptr<sf::Shape>
 ShapeFactory::createShape(const std::shared_ptr<Entity>& entity) {
     // static RNG + distribution, initialized once per thread

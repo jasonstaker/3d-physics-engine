@@ -11,6 +11,16 @@
 using namespace std;
 
 class Renderer {
+
+    // fields
+    unsigned int width; 
+    unsigned int height;
+    sf::RenderWindow* window;
+    ShapeFactory shapeFactory;
+    sf::Clock fpsClock;
+    sf::Font font;
+    shared_ptr<Quadtree> debugQuadtree = nullptr;
+    
 public:
 
     // constructors
@@ -26,14 +36,4 @@ public:
     void drawHelpOverlay();
     vector<sf::Event> pollEvents();
 
-private:
-
-    // fields
-    unsigned int width; 
-    unsigned int height;
-    sf::RenderWindow* window;
-    ShapeFactory shapeFactory;
-    sf::Clock fpsClock;
-    sf::Font font;
-    shared_ptr<Quadtree> debugQuadtree = nullptr;
 };

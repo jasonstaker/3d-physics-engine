@@ -37,6 +37,9 @@ namespace Config {
     bool showVelocityColors = false;
     float timeScaleMultiplier = 1.0f;
 
+    // REQUIRES: valid JSON file at path
+    // MODIFIES: all Config variables
+    // EFFECTS: loads configuration values or keeps defaults
     void loadFromFile(const std::string& path) {
         std::ifstream in(path);
         if (!in.is_open()) throw std::runtime_error("Cannot open config file: " + path);

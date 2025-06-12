@@ -37,7 +37,5 @@ namespace Config {
     extern bool showVelocityColors;
     extern float timeScaleMultiplier;
 
-    /// Load all Config:: variables from the given JSON file.
-    /// Throws std::runtime_error if loading/parsing fails.
     void loadFromFile(const std::string &path);
 }

@@ -3,6 +3,10 @@
 #include "Entity.hpp"
 
 class CircleEntity : public Entity {
+
+    // fields
+    float radius;
+    
 public:
 
     // constructors
@@ -13,10 +17,5 @@ public:
 
     // functions
     int getRadius();
-
-private:
-
-    // fields
-    float radius;
 
 };

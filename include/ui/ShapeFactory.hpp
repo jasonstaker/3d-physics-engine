@@ -6,6 +6,8 @@
 
 class ShapeFactory {
 public:
+
     static std::unique_ptr<sf::Shape>
     createShape(const std::shared_ptr<Entity>& entity);
+    
 };
