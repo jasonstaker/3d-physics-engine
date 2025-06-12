@@ -52,17 +52,11 @@ void Simulation::spawnRandomBall() {
 }
 
 void Simulation::run() {
-    float total = 0.0f;
     auto lastRenderTime = high_resolution_clock::now();
     auto lastTime = lastRenderTime;
     float accumulator = 0.0f;
 
     while (Config::running) {
-        if (total >= Config::simulationRunTime) {
-            Config::running = false;
-            break;
-        }
-
         processEvents();
 
         auto currentTime = high_resolution_clock::now();
@@ -76,7 +70,6 @@ void Simulation::run() {
             while (accumulator >= Config::fixedTimeStep) {
                 world.update(Config::fixedTimeStep);
                 accumulator -= Config::fixedTimeStep;
-                total += Config::fixedTimeStep;
 
                 if (Config::paused && Config::stepOnceRequested) {
                     Config::stepOnceRequested = false;
